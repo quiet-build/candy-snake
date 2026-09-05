@@ -16,18 +16,18 @@ export interface PillowButtonOpts {
 }
 
 const FACE_BY_COLOR: Record<PillowColor, number> = {
-  green: THEME.colors.btnGreenFace,
-  pink: THEME.colors.btnPinkFace,
-  purple: THEME.colors.btnPurpleFace,
-  yellow: THEME.colors.btnYellowFace,
-  white: THEME.colors.btnWhiteFace
+  green: 0x2f6b4f,
+  pink: 0xefb097,
+  purple: 0xc7b4dc,
+  yellow: 0xf1d49a,
+  white: 0xfffaf0
 };
 const BASE_BY_COLOR: Record<PillowColor, number> = {
-  green: THEME.colors.btnGreenBase,
-  pink: THEME.colors.btnPinkBase,
-  purple: THEME.colors.btnPurpleBase,
-  yellow: THEME.colors.btnYellowBase,
-  white: THEME.colors.btnWhiteBase
+  green: 0x174e3b,
+  pink: 0xc9795d,
+  purple: 0x9c82b5,
+  yellow: 0xc59b50,
+  white: 0xd9d3c5
 };
 
 const PRESS_OFFSET = 5; // px the face translates down when pressed
@@ -43,10 +43,10 @@ export function makePillowButton(scene: Phaser.Scene, x: number, y: number, opts
   const color = opts.color ?? 'green';
   const w = opts.width;
   const h = opts.height;
-  const radius = Math.min(h / 2, 24);
+  const radius = Math.min(h / 2, 18);
   const faceColor = FACE_BY_COLOR[color];
   const baseColor = BASE_BY_COLOR[color];
-  const textColor = opts.textColor ?? (color === 'white' || color === 'yellow' ? '#1a1a1a' : '#ffffff');
+  const textColor = opts.textColor ?? (color === 'green' ? '#fffaf0' : '#3f342c');
   const fontSize = opts.fontSize ?? Math.round(h * 0.45);
 
   const container = scene.add.container(x, y);
@@ -63,7 +63,7 @@ export function makePillowButton(scene: Phaser.Scene, x: number, y: number, opts
   faceGfx.fillStyle(faceColor, 1);
   faceGfx.fillRoundedRect(-w / 2, -h / 2, w, h, radius);
   // Subtle highlight stroke at top for depth
-  faceGfx.lineStyle(2, 0xffffff, 0.35);
+  faceGfx.lineStyle(2, 0xfffaf0, 0.45);
   faceGfx.strokeRoundedRect(-w / 2 + 1, -h / 2 + 1, w - 2, h * 0.45, { tl: radius, tr: radius, bl: 0, br: 0 });
   face.add(faceGfx);
 

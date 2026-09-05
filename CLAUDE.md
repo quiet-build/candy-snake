@@ -4,14 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-- `npm run dev` — Vite dev server at http://localhost:5173
-- `npm run build` — `tsc -b` (type-check) then `vite build` into `dist/`. CI also runs this.
-- `npm test` — Vitest, runs once. CI uses this.
-- `npm run test:watch` — Vitest in watch mode
-- `npx vitest run tests/Snake-movement.test.ts` — run a single test file
-- `npx vitest run -t "rejects 180"` — run tests matching a name pattern
+- `pnpm dev` — Vite dev server at http://localhost:5173
+- `pnpm build` — `tsc -b` (type-check) then `vite build` into `dist/`. CI also runs this.
+- `pnpm test` — Vitest, runs once. CI uses this.
+- `pnpm test:watch` — Vitest in watch mode
+- `pnpm exec vitest run tests/Snake-movement.test.ts` — run a single test file
+- `pnpm exec vitest run -t "rejects 180"` — run tests matching a name pattern
 
-CI (`.github/workflows/deploy.yml`) runs `npm ci && npm test && npm run build` on push to `main` and deploys `dist/` to Cloudflare Pages (project `candy-snake`).
+CI (`.github/workflows/deploy.yml`) runs `pnpm install --frozen-lockfile && pnpm test && pnpm build` on push to `main` and deploys `dist/` to Cloudflare Pages (project `candy-snake`).
 
 ## Architecture
 

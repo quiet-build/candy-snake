@@ -13,15 +13,17 @@ export class MenuScene extends Phaser.Scene {
     this.drawBackground(width, height);
     this.drawDriftingCandy(width, height);
 
-    // Title — Fredoka 800, bobbing
+    const titleSize = width < 520 ? 52 : 72;
+
+    // Title — playful display type, calmed by the forest-and-cream palette
     const title = this.add.text(width / 2, height * 0.28, 'Candy Snake', {
       fontFamily: THEME.font.display,
-      fontSize: '72px',
+      fontSize: `${titleSize}px`,
       fontStyle: '700',
-      color: '#8a5be0',
-      stroke: '#ffffff',
-      strokeThickness: 6,
-      shadow: { offsetX: 0, offsetY: 6, color: '#8a5be033', blur: 8, fill: true }
+      color: '#174e3b',
+      stroke: '#fffaf0',
+      strokeThickness: 5,
+      shadow: { offsetX: 0, offsetY: 5, color: '#563c2d24', blur: 8, fill: true }
     }).setOrigin(0.5);
     this.tweens.add({
       targets: title,
@@ -70,15 +72,15 @@ export class MenuScene extends Phaser.Scene {
     if (hs > 0) {
       const ribbon = this.add.container(width / 2, height * 0.55);
       const bg = this.add.graphics();
-      bg.fillStyle(THEME.colors.btnYellowFace, 1);
+      bg.fillStyle(0xf1d49a, 1);
       bg.fillRoundedRect(-110, -22, 220, 44, 22);
-      bg.lineStyle(3, THEME.colors.btnYellowBase, 1);
+      bg.lineStyle(2, 0xc59b50, 1);
       bg.strokeRoundedRect(-110, -22, 220, 44, 22);
       const txt = this.add.text(0, 0, `🏆  Best  ${hs}`, {
         fontFamily: THEME.font.display,
         fontSize: '22px',
         fontStyle: '700',
-        color: '#7a5417'
+        color: '#563c2d'
       }).setOrigin(0.5);
       ribbon.add([bg, txt]);
     } else {
@@ -86,7 +88,7 @@ export class MenuScene extends Phaser.Scene {
         fontFamily: THEME.font.body,
         fontSize: '18px',
         fontStyle: '600',
-        color: '#6b6b8a'
+        color: '#667064'
       }).setOrigin(0.5);
     }
 
@@ -113,9 +115,9 @@ export class MenuScene extends Phaser.Scene {
     const toggleBg = this.add.graphics();
     const drawToggle = () => {
       toggleBg.clear();
-      toggleBg.fillStyle(THEME.colors.btnWhiteBase, 1);
+      toggleBg.fillStyle(0xc8cdbd, 1);
       toggleBg.fillCircle(0, 5, 24);
-      toggleBg.fillStyle(THEME.colors.btnWhiteFace, 1);
+      toggleBg.fillStyle(0xfffaf0, 1);
       toggleBg.fillCircle(0, 0, 24);
     };
     drawToggle();
@@ -138,27 +140,26 @@ export class MenuScene extends Phaser.Scene {
       fontFamily: THEME.font.body,
       fontSize: '13px',
       fontStyle: '400',
-      color: '#7a7a92'
-    }).setOrigin(0.5).setAlpha(0.7);
+      color: '#667064'
+    }).setOrigin(0.5).setAlpha(0.9);
   }
 
-  /** Soft pastel gradient background painted as a Graphics rect. */
+  /** Warm paper background with restrained tinted fields. */
   private drawBackground(width: number, height: number) {
-    // Phaser doesn't have native gradient fill, so layer two semi-transparent rects
     const bg = this.add.graphics();
-    bg.fillStyle(0xffe9f3, 1).fillRect(0, 0, width, height);
-    bg.fillStyle(0xe6f3ff, 0.55).fillRect(0, height * 0.3, width, height * 0.7);
-    bg.fillStyle(0xffeede, 0.4).fillRect(0, 0, width, height * 0.5);
+    bg.fillStyle(0xf5f2e8, 1).fillRect(0, 0, width, height);
+    bg.fillStyle(0xc7b4dc, 0.12).fillRect(0, height * 0.38, width, height * 0.62);
+    bg.fillStyle(0xefb097, 0.1).fillRect(0, 0, width, height * 0.44);
   }
 
   /** Decorative candy / cloud shapes drifting horizontally for depth. */
   private drawDriftingCandy(width: number, height: number) {
     const shapes = [
-      { y: height * 0.12, r: 28, color: THEME.colors.appleLight, alpha: 0.35, speed: 60 },
-      { y: height * 0.22, r: 20, color: THEME.colors.berryLight, alpha: 0.30, speed: 80 },
-      { y: height * 0.66, r: 24, color: THEME.colors.starLight, alpha: 0.40, speed: 50 },
-      { y: height * 0.82, r: 18, color: THEME.colors.snakeLight, alpha: 0.30, speed: 70 },
-      { y: height * 0.92, r: 30, color: THEME.colors.appleLight, alpha: 0.25, speed: 55 }
+      { y: height * 0.12, r: 28, color: 0x9dc3a5, alpha: 0.24, speed: 60 },
+      { y: height * 0.22, r: 20, color: 0xc7b4dc, alpha: 0.22, speed: 80 },
+      { y: height * 0.66, r: 24, color: 0xf1d49a, alpha: 0.25, speed: 50 },
+      { y: height * 0.82, r: 18, color: 0x9dc3a5, alpha: 0.22, speed: 70 },
+      { y: height * 0.92, r: 30, color: 0xefb097, alpha: 0.2, speed: 55 }
     ];
     for (const s of shapes) {
       const startX = -s.r - Math.random() * width;

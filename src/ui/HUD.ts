@@ -23,15 +23,15 @@ export class HUD {
     if (onPause) {
       const pause = scene.add.container(boardLeft + 16, y + 8);
       const shadow = scene.add.graphics();
-      shadow.fillStyle(0xd6cfca, 1);
+      shadow.fillStyle(0xc8cdbd, 1);
       shadow.fillCircle(0, 4, 22);
       const face = scene.add.graphics();
-      face.fillStyle(0xffffff, 1);
+      face.fillStyle(0xfffaf0, 1);
       face.fillCircle(0, 0, 22);
-      face.lineStyle(2, 0xebe1f0, 1);
+      face.lineStyle(2, 0xa9bba7, 1);
       face.strokeCircle(0, 0, 22);
       const icon = scene.add.text(0, 0, '⏸', {
-        fontFamily: THEME.font.display, fontSize: '20px', fontStyle: '700', color: '#8a5be0'
+        fontFamily: THEME.font.display, fontSize: '20px', fontStyle: '700', color: '#174e3b'
       }).setOrigin(0.5);
       pause.add([shadow, face, icon]);
       const hit = scene.add.zone(0, 4, 50, 50).setInteractive({ useHandCursor: true });
@@ -46,23 +46,29 @@ export class HUD {
     const heartsX = boardLeft + 56;
     for (let i = 0; i < 3; i++) {
       const h = scene.add.text(heartsX + i * 28, y + 8, '♥', {
-        fontFamily: THEME.font.display, fontSize: '28px', fontStyle: '700', color: '#ff4fa3',
-        stroke: '#ffffff', strokeThickness: 3
+        fontFamily: THEME.font.display, fontSize: '28px', fontStyle: '700', color: '#b65d49',
+        stroke: '#fffaf0', strokeThickness: 3
       }).setOrigin(0.5);
       this.heartImgs.push(h);
     }
 
     // Level chip — small, secondary, center-ish
-    this.levelText = scene.add.text(boardLeft + boardWidth / 2 - 80, y + 8, 'LV 1', {
-      fontFamily: THEME.font.display, fontSize: '18px', fontStyle: '700', color: '#8a5be0',
-      backgroundColor: '#ffffff', padding: { x: 12, y: 4 }
+    const compactHud = boardWidth < 400;
+    const levelX = boardLeft + boardWidth / 2 - (compactHud ? 0 : 80);
+    const levelChip = scene.add.graphics();
+    levelChip.fillStyle(0xfffaf0, 0.96);
+    levelChip.fillRoundedRect(levelX - 36, y - 10, 72, 36, 13);
+    levelChip.lineStyle(2, 0xc7b4dc, 1);
+    levelChip.strokeRoundedRect(levelX - 36, y - 10, 72, 36, 13);
+    this.levelText = scene.add.text(levelX, y + 8, 'LV 1', {
+      fontFamily: THEME.font.display, fontSize: '18px', fontStyle: '700', color: '#563c2d'
     }).setOrigin(0.5);
 
     // Power-up ring — sits left of score
-    this.puContainer = scene.add.container(boardLeft + boardWidth - 130, y + 8);
+    this.puContainer = scene.add.container(boardLeft + boardWidth - (compactHud ? 96 : 130), y + 8);
     this.puRing = scene.add.graphics();
     const puBg = scene.add.graphics();
-    puBg.fillStyle(0xffffff, 0.9);
+    puBg.fillStyle(0xfffaf0, 0.94);
     puBg.fillCircle(0, 0, 18);
     this.puIconText = scene.add.text(0, 0, '', { fontSize: '18px' }).setOrigin(0.5);
     this.puContainer.add([puBg, this.puRing, this.puIconText]);
@@ -72,8 +78,8 @@ export class HUD {
     this.scoreContainer = scene.add.container(boardLeft + boardWidth - 8, y + 8);
     const scoreStar = scene.add.text(-58, 0, '⭐', { fontSize: '24px' }).setOrigin(1, 0.5);
     this.scoreText = scene.add.text(0, 0, '0', {
-      fontFamily: THEME.font.display, fontSize: '32px', fontStyle: '700', color: '#3fd16c',
-      stroke: '#ffffff', strokeThickness: 3
+      fontFamily: THEME.font.display, fontSize: '32px', fontStyle: '700', color: '#174e3b',
+      stroke: '#fffaf0', strokeThickness: 3
     }).setOrigin(1, 0.5);
     this.scoreContainer.add([scoreStar, this.scoreText]);
   }

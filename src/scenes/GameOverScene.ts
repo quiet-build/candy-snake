@@ -19,15 +19,17 @@ export class GameOverScene extends Phaser.Scene {
     this.add.rectangle(0, 0, width, height, 0x1a1a30, 0.55).setOrigin(0).setInteractive();
 
     // Card with shadow + slight scale-in
+    const cardWidth = Math.min(380, width - 32);
+    const cardLeft = width / 2 - cardWidth / 2;
     const cardShadow = this.add.graphics();
-    cardShadow.fillStyle(0x1a1a30, 0.3);
-    cardShadow.fillRoundedRect(width / 2 - 190, height / 2 - 160, 380, 340, 28);
+    cardShadow.fillStyle(0x174e3b, 0.22);
+    cardShadow.fillRoundedRect(cardLeft, height / 2 - 160, cardWidth, 340, 24);
     void cardShadow;
     const card = this.add.graphics();
-    card.fillStyle(THEME.colors.surface, 1);
-    card.fillRoundedRect(width / 2 - 190, height / 2 - 165, 380, 340, 28);
-    card.lineStyle(3, 0xf0e6f5, 1);
-    card.strokeRoundedRect(width / 2 - 190, height / 2 - 165, 380, 340, 28);
+    card.fillStyle(0xfffaf0, 1);
+    card.fillRoundedRect(cardLeft, height / 2 - 165, cardWidth, 340, 24);
+    card.lineStyle(2, 0xc8cdbd, 1);
+    card.strokeRoundedRect(cardLeft, height / 2 - 165, cardWidth, 340, 24);
 
     const cardGroup = this.add.container(0, 0).setScale(0.85).setAlpha(0);
     cardGroup.add(card);
@@ -38,7 +40,7 @@ export class GameOverScene extends Phaser.Scene {
       fontFamily: THEME.font.display,
       fontSize: '40px',
       fontStyle: '700',
-      color: '#8a5be0'
+      color: '#174e3b'
     }).setOrigin(0.5);
 
     // Score with star icon — count-up animation
@@ -50,7 +52,7 @@ export class GameOverScene extends Phaser.Scene {
       fontFamily: THEME.font.display,
       fontSize: '64px',
       fontStyle: '700',
-      color: '#3fd16c'
+      color: '#174e3b'
     }).setOrigin(0.5);
 
     countUp(this, scoreText, 0, this.finalScore, 700);
@@ -60,15 +62,15 @@ export class GameOverScene extends Phaser.Scene {
     if (isBest && this.finalScore > 0) {
       const badge = this.add.container(width / 2, height / 2 + 25).setScale(0);
       const badgeBg = this.add.graphics();
-      badgeBg.fillStyle(THEME.colors.btnYellowFace, 1);
+      badgeBg.fillStyle(0xf1d49a, 1);
       badgeBg.fillRoundedRect(-110, -22, 220, 44, 22);
-      badgeBg.lineStyle(3, THEME.colors.btnYellowBase, 1);
+      badgeBg.lineStyle(2, 0xc59b50, 1);
       badgeBg.strokeRoundedRect(-110, -22, 220, 44, 22);
       const badgeTxt = this.add.text(0, 0, '🏆  New Best!', {
         fontFamily: THEME.font.display,
         fontSize: '22px',
         fontStyle: '700',
-        color: '#7a5417'
+        color: '#563c2d'
       }).setOrigin(0.5);
       badge.add([badgeBg, badgeTxt]);
       this.time.delayedCall(750, () => {
@@ -80,18 +82,19 @@ export class GameOverScene extends Phaser.Scene {
         fontFamily: THEME.font.body,
         fontSize: '18px',
         fontStyle: '600',
-        color: '#7a7a92'
+        color: '#667064'
       }).setOrigin(0.5);
     }
 
     // Buttons
+    const buttonWidth = Math.min(240, cardWidth - 48);
     const playAgain = makePillowButton(this, width / 2, height / 2 + 90, {
-      width: 240, height: 60, label: '▶  Play Again', color: 'green', breathing: true,
+      width: buttonWidth, height: 60, label: '▶  Play Again', color: 'green', breathing: true,
       onClick: () => this.scene.start('GameScene')
     });
     void playAgain;
     makePillowButton(this, width / 2, height / 2 + 158, {
-      width: 240, height: 56, label: '⌂  Menu', color: 'white',
+      width: buttonWidth, height: 56, label: '⌂  Menu', color: 'white',
       onClick: () => this.scene.start('MenuScene')
     });
 

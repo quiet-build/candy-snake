@@ -14,14 +14,16 @@ export class PauseScene extends Phaser.Scene {
     bg.on('pointerdown', () => { /* swallow only */ });
 
     // Card with soft drop shadow effect (two stacked rounded rects)
+    const cardWidth = Math.min(340, width - 32);
+    const cardLeft = width / 2 - cardWidth / 2;
     const cardShadow = this.add.graphics();
-    cardShadow.fillStyle(0x1a1a30, 0.25);
-    cardShadow.fillRoundedRect(width / 2 - 170, height / 2 - 145, 340, 290, 28);
+    cardShadow.fillStyle(0x174e3b, 0.2);
+    cardShadow.fillRoundedRect(cardLeft, height / 2 - 145, cardWidth, 290, 24);
     const card = this.add.graphics();
-    card.fillStyle(THEME.colors.surface, 1);
-    card.fillRoundedRect(width / 2 - 170, height / 2 - 150, 340, 290, 28);
-    card.lineStyle(3, 0xf0e6f5, 1);
-    card.strokeRoundedRect(width / 2 - 170, height / 2 - 150, 340, 290, 28);
+    card.fillStyle(0xfffaf0, 1);
+    card.fillRoundedRect(cardLeft, height / 2 - 150, cardWidth, 290, 24);
+    card.lineStyle(2, 0xc8cdbd, 1);
+    card.strokeRoundedRect(cardLeft, height / 2 - 150, cardWidth, 290, 24);
     void cardShadow;
 
     // Title
@@ -29,27 +31,28 @@ export class PauseScene extends Phaser.Scene {
       fontFamily: THEME.font.display,
       fontSize: '40px',
       fontStyle: '700',
-      color: '#8a5be0'
+      color: '#174e3b'
     }).setOrigin(0.5);
     this.tweens.add({ targets: title, scale: { from: 0.7, to: 1 }, duration: 250, ease: 'Back.easeOut' });
 
     // Pause icon (two rounded bars)
     const pauseIcon = this.add.graphics();
-    pauseIcon.fillStyle(THEME.colors.berry, 0.2);
+    pauseIcon.fillStyle(0x9dc3a5, 0.22);
     pauseIcon.fillCircle(width / 2, height / 2 - 95, 40);
     void pauseIcon;
 
     // Buttons — pillow style
+    const buttonWidth = Math.min(240, cardWidth - 48);
     makePillowButton(this, width / 2, height / 2 - 30, {
-      width: 240, height: 56, label: '▶  Resume', color: 'green', breathing: true,
+      width: buttonWidth, height: 56, label: '▶  Resume', color: 'green', breathing: true,
       onClick: () => this.resumeGame()
     });
     makePillowButton(this, width / 2, height / 2 + 38, {
-      width: 240, height: 56, label: '↺  Restart', color: 'pink',
+      width: buttonWidth, height: 56, label: '↺  Restart', color: 'pink',
       onClick: () => { this.scene.stop('PauseScene'); this.scene.stop('GameScene'); this.scene.start('GameScene'); }
     });
     makePillowButton(this, width / 2, height / 2 + 106, {
-      width: 240, height: 56, label: '⌂  Menu', color: 'white',
+      width: buttonWidth, height: 56, label: '⌂  Menu', color: 'white',
       onClick: () => { this.scene.stop('PauseScene'); this.scene.stop('GameScene'); this.scene.start('MenuScene'); }
     });
 

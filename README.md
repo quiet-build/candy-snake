@@ -5,8 +5,8 @@ A polished snake game for ages 9–12. Built with Phaser 3 + Vite + TypeScript.
 ## Run locally
 
 ```sh
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Open http://localhost:5173.
@@ -14,7 +14,7 @@ Open http://localhost:5173.
 ## Build
 
 ```sh
-npm run build
+pnpm build
 ```
 
 Output is in `dist/` — deploy as a static site (Netlify, Vercel, GitHub Pages, etc.).
@@ -22,7 +22,7 @@ Output is in `dist/` — deploy as a static site (Netlify, Vercel, GitHub Pages,
 ## Tests
 
 ```sh
-npm run test
+pnpm test
 ```
 
 41 unit tests cover the engine-agnostic game logic (`src/game/*`, `src/storage.ts`, `src/input/KeyboardInput.ts`).

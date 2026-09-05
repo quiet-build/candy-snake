@@ -6,7 +6,7 @@ Documents src/scenes/MenuScene.ts, a source/config file in this project. It defi
 
 ## Behavior
 
-Provides maintained project behavior. Keep callers, tests, and configuration references synchronized when editing it.
+Provides the warm cream start screen, forest title, soft drifting accents, mascot, best-score treatment, start action, audio toggle, and input hint. The title scales down below 520px to stay legible on narrow screens; scene flow and controls remain unchanged.
 
 ## Maintenance
 

@@ -6,7 +6,7 @@ Documents src/scenes/GameOverScene.ts, a source/config file in this project. It 
 
 ## Behavior
 
-Provides maintained project behavior. Keep callers, tests, and configuration references synchronized when editing it.
+Provides the cream game-over card, score/best presentation, celebration, and existing replay/menu actions. The card and buttons cap their width against the viewport for narrow-screen containment; scoring and scene flow remain unchanged.
 
 ## Maintenance
 

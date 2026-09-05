@@ -6,7 +6,7 @@ Documents src/scenes/PauseScene.ts, a source/config file in this project. It def
 
 ## Behavior
 
-Provides maintained project behavior. Keep callers, tests, and configuration references synchronized when editing it.
+Provides the cream pause card and its existing resume, restart, and menu actions. The card and buttons cap their width against the viewport for narrow-screen containment; pause/resume behavior remains unchanged.
 
 ## Maintenance
 

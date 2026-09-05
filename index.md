@@ -6,7 +6,7 @@ Documents index.html, a HTML entry/static document in this project.
 
 ## Behavior
 
-Provides maintained project behavior. Keep callers, tests, and configuration references synchronized when editing it.
+Provides the full-viewport game host, warm cream page background, bundled font links, and touch/scroll suppression required by the Phaser canvas.
 
 ## Maintenance
 
