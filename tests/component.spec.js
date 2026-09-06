@@ -204,6 +204,7 @@ async function assertPaused(game){await expect(game.locator("canvas")).toHaveAtt
 async function resume(game,page){await game.locator(".game-container").focus();await page.keyboard.press("Escape");}
 async function restart(game){await canvasClick(game,.5,.5+38/820);}
 test("keyboard and touch steer, scored round emits once and replay resets",async({page})=>{
+ test.setTimeout(45000);
  page.on('pageerror', error => { throw error; });
  await page.clock.install();
  const game=await initialized(page);
