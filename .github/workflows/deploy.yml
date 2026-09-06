@@ -13,7 +13,7 @@ jobs:
     with:
       support-sha: 8286c17efa989220f88548ffb901f742e3302f3e
       cloudflare-project-name: candy-snake
-      prebuild-command: "pnpm test"
+      prebuild-command: "pnpm test && node --test tests/redirect.test.mjs"
       postbuild-command: "pnpm exec playwright test --config playwright.component.config.js"
     secrets:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
