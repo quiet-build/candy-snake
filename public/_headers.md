@@ -1,3 +1,3 @@
-# _headers
+# Component response headers
 
-Adds Access-Control-Allow-Origin: * to static component modules, shared chunks and audio assets. Production hosting must serve this generated dist/_headers file.
+Wildcard CORS covers the stable module and all game-origin JS, styles, fonts, audio and worker/WASM dependencies. Revalidation prevents stale component.js reuse without a conditional request. Retention preserves immutable dependencies; these headers apply to the current build.

@@ -1,13 +1,3 @@
-# deploy.yml
+# Arcade deployment
 
-## Purpose
-
-Documents .github/workflows/deploy.yml, a CI workflow in this project.
-
-## Behavior
-
-Runs automation for this repository. Keep triggers, permissions, secrets, and deployment targets aligned with the platform it protects.
-
-## Maintenance
-
-Update this companion when .github/workflows/deploy.yml changes in a way that affects public behavior, configuration, dependencies, data shape, or maintenance expectations.
+Deploy opts into the pinned dedicated arcade workflow and matching helper SHA. Node 24/pnpm 11.25.0 with frozen dependencies; source gates → root-base build → component/standalone and applicable budgets → validated cumulative GitHub release snapshot → Cloudflare Pages. Retained paths cannot change bytes; version asset filenames when replacing them. All publication remains CI-only. Production headers provide cross-origin assets and revalidate the stable entry. Update both support pins together after reviewing the support commit.

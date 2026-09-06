@@ -1,24 +1,20 @@
-name: Deploy
-
-# Thin caller — actual build + deploy logic lives in
-# quiet-build/.github/.github/workflows/deploy-static-site.yml
+name: Deploy arcade component
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   deploy:
     permissions:
-      contents: read
-      pages: write
-      id-token: write
-    uses: quiet-build/.github/.github/workflows/deploy-static-site.yml@main
+      contents: write
+    uses: quiet-build/.github/.github/workflows/deploy-arcade-component.yml@f874ec46eb04fef8b85cd95ee6dca62b35e526ec
     with:
-      install-command: "corepack enable && pnpm install --frozen-lockfile"
-      build-command: "pnpm test && pnpm build"
+      support-sha: f874ec46eb04fef8b85cd95ee6dca62b35e526ec
+      cloudflare-project-name: candy-snake
+      prebuild-command: "pnpm test"
+      postbuild-command: "pnpm exec playwright test --config playwright.component.config.js"
     secrets:
-      CLOUDFLARE_API_TOKEN:  ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
