@@ -13,35 +13,42 @@ export function mount(container: HTMLElement, ready = () => {}, result = (_detai
   const height = Math.min(container.clientHeight || 820, 820);
   container.tabIndex = 0;
   container.setAttribute('aria-label', 'Candy Snake. Space to play, arrows or WASD to steer, Escape to pause.');
-  let disposeRuntime = () => {};
+  let disposeRuntime = (_failedBoot = false) => {};
   let disposed = false;
-  const game = new SessionGame({
-    type: Phaser.AUTO, parent: container, width, height, transparent: true, autoFocus: false,
-    input: { windowEvents: false, keyboard: { target: container, capture: [32, 27, 37, 38, 39, 40, 65, 68, 83, 87] }, mouse: { target: container }, touch: { target: container } },
-    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-    callbacks: { preBoot(game) {
-      game.registry.set('audio', createAudioManager());
-      disposeRuntime = ownRuntime(game, container);
-      game.events.once('pma-ui-ready', () => { if (!disposed) ready(); });
-      game.events.on('pma-result', (detail: { mode: string; score: number }) => { if (!disposed) result(detail); });
-      if (disposed) disposeRuntime();
-    } },
-    scene: [BootScene, MenuScene, GameScene, PauseScene, GameOverScene]
-  });
-  const pause = () => {
-    if (disposed) return;
-    if (game.scene.isActive('GameScene')) (game.scene.getScene('GameScene') as GameScene).pauseGame();
-    game.sound?.pauseAll();
-  };
-  container.addEventListener('pointerdown', () => { container.focus({ preventScroll: true }); game.sound?.resumeAll(); }, { signal: listeners.signal });
-  container.addEventListener('keydown', () => game.sound?.resumeAll(), { signal: listeners.signal });
-  container.addEventListener('focusout', event => {
-    if (!container.contains(event.relatedTarget as Node | null)) pause();
-  }, { signal: listeners.signal });
-  window.addEventListener('blur', pause, { signal: listeners.signal });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); }, { signal: listeners.signal });
-  return { pause, dispose() {
-    if (disposed) return;
-    disposed = true; listeners.abort(); disposeRuntime();
-  } };
+  try {
+    const game = new SessionGame({
+      type: Phaser.AUTO, parent: container, width, height, transparent: true, autoFocus: false,
+      input: { windowEvents: false, keyboard: { target: container, capture: [32, 27, 37, 38, 39, 40, 65, 68, 83, 87] }, mouse: { target: container }, touch: { target: container } },
+      scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+      callbacks: { preBoot(game) {
+        disposeRuntime = ownRuntime(game, container);
+        game.registry.set('audio', createAudioManager());
+        game.events.once('pma-ui-ready', () => { if (!disposed) ready(); });
+        game.events.on('pma-result', (detail: { mode: string; score: number }) => { if (!disposed) result(detail); });
+        if (disposed) disposeRuntime();
+      } },
+      scene: [BootScene, MenuScene, GameScene, PauseScene, GameOverScene]
+    });
+    const pause = () => {
+      if (disposed) return;
+      if (game.scene.isActive('GameScene')) (game.scene.getScene('GameScene') as GameScene).pauseGame();
+      game.sound?.pauseAll();
+    };
+    container.addEventListener('pointerdown', () => { container.focus({ preventScroll: true }); game.sound?.resumeAll(); }, { signal: listeners.signal });
+    container.addEventListener('keydown', () => game.sound?.resumeAll(), { signal: listeners.signal });
+    container.addEventListener('focusout', event => {
+      if (!container.contains(event.relatedTarget as Node | null)) pause();
+    }, { signal: listeners.signal });
+    window.addEventListener('blur', pause, { signal: listeners.signal });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); }, { signal: listeners.signal });
+    return { pause, dispose() {
+      if (disposed) return;
+      disposed = true; listeners.abort(); disposeRuntime();
+    } };
+  } catch (error) {
+    disposed = true;
+    listeners.abort();
+    try { disposeRuntime(true); } catch (cleanupError) { console.error(cleanupError); }
+    throw error;
+  }
 }

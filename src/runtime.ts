@@ -36,9 +36,23 @@ export function ownRuntime(game: Phaser.Game, container: HTMLElement) {
     container.addEventListener('pointerdown', unlock, { signal: listeners.signal });
     container.addEventListener('keydown', unlock, { signal: listeners.signal });
   }
-  return () => {
+  return (failedBoot = false) => {
+    if (disposed) return;
     disposed = true;
     listeners.abort();
+    if (failedBoot && !game.scene.isBooted) {
+      // Renderer setup can throw before BOOT/READY. SceneManager.destroy()
+      // requires its not-yet-created system scene, so release only owned parts.
+      game.events.emit(Phaser.Core.Events.DESTROY);
+      game.events.removeAllListeners();
+      game.renderer?.destroy();
+      if (game.canvas) {
+        Phaser.Display.Canvas.CanvasPool.remove(game.canvas);
+        game.canvas.remove();
+      }
+      game.loop.destroy();
+      return;
+    }
     game.input?.keyboard?.stopListeners();
     game.sound?.stopAll();
     for (const scene of game.scene.getScenes(false)) {
