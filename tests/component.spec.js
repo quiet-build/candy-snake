@@ -227,8 +227,12 @@ test("keyboard and touch steer, scored round emits once and replay resets",async
  await page.clock.runFor(180);
  await expect(game.locator("canvas")).toHaveAttribute("aria-label", /Direction: up/);
  await cdp.detach();
- // Advance real scene ticks through wall collisions and all three lives.
- await page.clock.runFor(12000);
+ // Advance real scene ticks through wall collisions and all three lives, but
+ // stop once the real round event is observable instead of rendering past it.
+ let elapsed=0;
+ while(elapsed<12000&&await page.evaluate(()=>window.rounds.length===0)){
+  await page.clock.runFor(500);elapsed+=500;
+ }
  expect(await page.evaluate(()=>window.rounds)).toEqual([{gameId:"candy-snake",mode:"classic",score:10}]);
  await expect(game.locator("canvas")).toHaveAttribute("aria-label","Game Over. Score: 10");
  await game.locator(".game-container").focus();await page.keyboard.press("Space");await page.clock.runFor(32);
