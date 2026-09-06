@@ -10,6 +10,8 @@ export class GameOverScene extends Phaser.Scene {
   init(data: { score: number }) { this.finalScore = data?.score ?? 0; }
 
   create() {
+    this.game.canvas.setAttribute('aria-label', `Game Over. Score: ${this.finalScore}`);
+    this.game.events.emit('pma-result', { mode: 'classic', score: this.finalScore });
     const { width, height } = this.scale;
     const prev = loadHighScore();
     const isBest = this.finalScore > prev;

@@ -10,3 +10,6 @@ src/**/*.js
 tests/**/*.js
 src/**/*.d.ts
 tests/**/*.d.ts
+!tests/component.spec.js
+test-results/
+playwright-report/

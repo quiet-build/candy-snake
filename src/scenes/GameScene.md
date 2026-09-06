@@ -1,13 +1,3 @@
 # GameScene.ts
 
-## Purpose
-
-Documents src/scenes/GameScene.ts, a source/config file in this project. It defines GameScene.
-
-## Behavior
-
-Provides maintained project behavior. Keep callers, tests, and configuration references synchronized when editing it.
-
-## Maintenance
-
-Update this companion when src/scenes/GameScene.ts changes in a way that affects public behavior, configuration, dependencies, data shape, or maintenance expectations.
+Owns the existing tick loop and XState actor. Public `pauseGame()` lets the shared mount enter the existing deep-history pause flow; `resumeFromPause()` restores the recorded state. Audio is session-owned. Scene shutdown stops the actor and native visibility/swipe listeners. Canvas labels reflect play, current score and the actual committed movement direction. Every new run still resets all per-run state in create().

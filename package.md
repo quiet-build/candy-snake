@@ -1,13 +1,3 @@
 # package.json
 
-## Purpose
-
-Documents package.json, a package manifest in this project.
-
-## Behavior
-
-Declares package scripts, dependencies, and the pinned pnpm version. `pnpm-lock.yaml` is the only dependency lockfile; install with `pnpm install --frozen-lockfile` in CI. `pnpm-workspace.yaml` approves esbuild's required install script without combining this repository with the other games.
-
-## Maintenance
-
-Update this companion when package.json changes in a way that affects public behavior, configuration, dependencies, data shape, or maintenance expectations.
+Uses pnpm 11.25.0. Existing `test` runs Vitest logic tests; `build` type-checks then builds both entries. `test:component` builds and runs the separate-origin Playwright harness. @playwright/test is the only new dependency, required because no browser-test tool was previously installed. PLAYWRIGHT_EXECUTABLE_PATH can select an installed Chromium.

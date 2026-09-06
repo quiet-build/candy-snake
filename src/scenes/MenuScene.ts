@@ -1,11 +1,13 @@
 import Phaser from 'phaser';
 import { THEME } from '../theme';
 import { loadHighScore } from '../storage';
-import { AudioManager } from '../audio/AudioManager';
+import type { createAudioManager } from '../audio/AudioManager';
 import { makePillowButton } from '../ui/PillowButton';
 
 export class MenuScene extends Phaser.Scene {
   constructor() { super('MenuScene'); }
+
+  private get audio(): ReturnType<typeof createAudioManager> { return this.registry.get('audio'); }
 
   create() {
     const { width, height } = this.scale;
@@ -106,8 +108,8 @@ export class MenuScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-SPACE', startGame);
 
     // Audio unlock & sound toggle
-    AudioManager.setGame(this.game);
-    const unlock = () => AudioManager.unlock(this);
+    this.audio.setGame(this.game);
+    const unlock = () => this.audio.unlock(this);
     this.input.once('pointerdown', unlock);
     this.input.keyboard?.on('keydown', unlock);
 
@@ -121,17 +123,17 @@ export class MenuScene extends Phaser.Scene {
       toggleBg.fillCircle(0, 0, 24);
     };
     drawToggle();
-    const toggleText = this.add.text(0, 0, AudioManager.isOn() ? '🔊' : '🔇', {
+    const toggleText = this.add.text(0, 0, this.audio.isOn() ? '🔊' : '🔇', {
       fontSize: '24px'
     }).setOrigin(0.5);
     toggle.add([toggleBg, toggleText]);
     const toggleHit = this.add.zone(0, 0, 56, 56).setInteractive({ useHandCursor: true });
     toggle.add(toggleHit);
     toggleHit.on('pointerdown', () => {
-      const newState = !AudioManager.isOn();
-      AudioManager.setOn(newState);
+      const newState = !this.audio.isOn();
+      this.audio.setOn(newState);
       unlock();
-      toggleText.setText(AudioManager.isOn() ? '🔊' : '🔇');
+      toggleText.setText(this.audio.isOn() ? '🔊' : '🔇');
       this.tweens.add({ targets: toggle, scale: 0.92, duration: 80, yoyo: true, ease: 'Quad.easeOut' });
     });
 
@@ -142,6 +144,9 @@ export class MenuScene extends Phaser.Scene {
       fontStyle: '400',
       color: '#667064'
     }).setOrigin(0.5).setAlpha(0.9);
+    this.game.canvas.setAttribute('role', 'img');
+    this.game.canvas.setAttribute('aria-label', 'Candy Snake. Press Space or tap Play to start.');
+    this.game.events.emit('pma-ui-ready');
   }
 
   /** Warm paper background with restrained tinted fields. */

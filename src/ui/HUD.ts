@@ -98,6 +98,7 @@ export class HUD {
   }
 
   setScore(s: number) {
+    this.scene.game.canvas.setAttribute('aria-label', `Playing. Score: ${s}`);
     this.scoreText.setText(`${s}`);
     popScale(this.scene, this.scoreText as unknown as Phaser.GameObjects.GameObject & { scale: number; setScale: (s: number) => unknown });
   }

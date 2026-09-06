@@ -6,6 +6,7 @@ export class PauseScene extends Phaser.Scene {
   constructor() { super('PauseScene'); }
 
   create() {
+    this.game.canvas.setAttribute('aria-label', 'Paused. Resume, Restart or Menu. Escape to resume.');
     const { width, height } = this.scale;
 
     // Translucent backdrop — interactive to swallow clicks but not resume
@@ -56,7 +57,10 @@ export class PauseScene extends Phaser.Scene {
       onClick: () => { this.scene.stop('PauseScene'); this.scene.stop('GameScene'); this.scene.start('MenuScene'); }
     });
 
-    this.input.keyboard?.on('keydown-ESC', () => this.resumeGame());
+    this.input.keyboard?.on('keydown-ESC', (event: KeyboardEvent) => {
+      event.stopPropagation();
+      this.resumeGame();
+    });
   }
 
   private resumeGame() {

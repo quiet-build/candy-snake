@@ -1,13 +1,3 @@
 # AudioManager.ts
 
-## Purpose
-
-Documents src/audio/AudioManager.ts, a source/config file in this project. It defines AudioManager.
-
-## Behavior
-
-Provides maintained project behavior. Keep callers, tests, and configuration references synchronized when editing it.
-
-## Maintenance
-
-Update this companion when src/audio/AudioManager.ts changes in a way that affects public behavior, configuration, dependencies, data shape, or maintenance expectations.
+`createAudioManager()` owns unlock state, BGM reference and sound preference for one Phaser session. The session stores it in the scene registry. Existing game-prefixed sound storage is retained; game disposal releases Phaser sounds and audio context. Public audio files remain the existing silent placeholders: lifetime/network verification does not prove audible sound.

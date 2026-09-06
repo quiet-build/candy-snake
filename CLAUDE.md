@@ -50,7 +50,7 @@ Phaser reuses scene instances across `scene.start('GameScene')`, so **field init
 
 ### Audio
 
-`AudioManager` is a module-level singleton (not a class). Browser autoplay policy means BGM won't play until the first user gesture — `MenuScene` calls `AudioManager.unlock()` on the first pointer/key event. `BootScene.preload` loads MP3s from `public/audio/`; missing files fail silently in `play()`. `public/audio/` ships silent placeholders — replace with real CC0 SFX before shipping.
+`createAudioManager()` owns audio state per session; `mount` stores it in the Phaser registry. MenuScene unlocks it on the first game-container gesture. BootScene loads existing MP3s from the game origin, including when embedded. `public/audio/` retains its silent placeholders, so audio lifecycle checks do not establish audible acceptance. `runtime.ts` owns Phaser input, visibility and audio teardown; standalone and native component entries share the mount.
 
 ## TypeScript
 
