@@ -11,3 +11,5 @@ Provides the full-viewport game host, warm cream page background, bundled font l
 ## Maintenance
 
 Update this companion when index.html changes in a way that affects public behavior, configuration, dependencies, data shape, or maintenance expectations.
+
+The standalone game container is the document main landmark; the component uses a neutral div instead.

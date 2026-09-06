@@ -1,4 +1,12 @@
 import {test,expect} from "@playwright/test";
+
+test("embedded mount leaves the main landmark to the host, standalone retains one", async ({ page }) => {
+  await page.goto("/");
+  await expect.poll(() => page.evaluate(() => (window).ready.length)).toBe(1);
+  await expect(page.locator("pma-candy-snake").locator("main, [role=main]")).toHaveCount(0);
+  await page.goto("http://127.0.0.1:5301/");
+  await expect(page.locator("main")).toHaveCount(1);
+});
 test.use({hasTouch:true});
 const tag="pma-candy-snake";
 test("renderer failure releases allocated resources and reconnect recovers", async ({page}) => {
@@ -181,7 +189,7 @@ test("real controls render within 900, 390 and 320 pixel hosts",async({page},inf
 test("safe setup error and reconnect recovery",async({page})=>{
   await page.addInitScript(()=>{
     const create=document.createElement.bind(document);window.failSetup=true;
-    document.createElement=function(name,...args){if(name==="main"&&window.failSetup)throw Error("private setup detail");return create(name,...args)};
+    document.createElement=function(name,...args){if(name==="div"&&window.failSetup)throw Error("private setup detail");return create(name,...args)};
   });
   await page.goto("/");
   await expect.poll(()=>page.evaluate(()=>window.failures)).toEqual([{gameId:tag.slice(4),message:"Unable to start game. Please try again."}]);
@@ -190,10 +198,10 @@ test("safe setup error and reconnect recovery",async({page})=>{
   await expect.poll(()=>page.evaluate(()=>window.ready.length)).toBe(1);
 });
 
-async function start(game,page){await game.locator("main").focus();await page.keyboard.press("Space");await assertPlaying(game);}
+async function start(game,page){await game.locator(".game-container").focus();await page.keyboard.press("Space");await assertPlaying(game);}
 async function assertPlaying(game){await expect(game.locator("canvas")).toHaveAttribute("aria-label",/Playing.*Score: 0/);}
 async function assertPaused(game){await expect(game.locator("canvas")).toHaveAttribute("aria-label",/Paused/);}
-async function resume(game,page){await game.locator("main").focus();await page.keyboard.press("Escape");}
+async function resume(game,page){await game.locator(".game-container").focus();await page.keyboard.press("Escape");}
 async function restart(game){await canvasClick(game,.5,.5+38/820);}
 test("keyboard and touch steer, scored round emits once and replay resets",async({page})=>{
  page.on('pageerror', error => { throw error; });
@@ -202,7 +210,7 @@ test("keyboard and touch steer, scored round emits once and replay resets",async
  await page.clock.pauseAt(new Date(Date.now()+100));
  // A repeatable PRNG preserves Phaser's unique texture IDs and places food at (9,15).
  await page.evaluate(()=>{let seed=1;Math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296}});
- await game.locator("main").focus();await page.keyboard.press("Space");await page.clock.runFor(32);
+ await game.locator(".game-container").focus();await page.keyboard.press("Space");await page.clock.runFor(32);
  await assertPlaying(game);
  await page.clock.runFor(900);
  await page.keyboard.press("ArrowDown");await page.clock.runFor(900);
@@ -222,7 +230,7 @@ test("keyboard and touch steer, scored round emits once and replay resets",async
  await page.clock.runFor(12000);
  expect(await page.evaluate(()=>window.rounds)).toEqual([{gameId:"candy-snake",mode:"classic",score:10}]);
  await expect(game.locator("canvas")).toHaveAttribute("aria-label","Game Over. Score: 10");
- await game.locator("main").focus();await page.keyboard.press("Space");await page.clock.runFor(32);
+ await game.locator(".game-container").focus();await page.keyboard.press("Space");await page.clock.runFor(32);
  await assertPlaying(game);
  expect(await page.evaluate(()=>window.rounds.length)).toBe(1);
 });

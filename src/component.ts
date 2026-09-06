@@ -8,8 +8,9 @@ class ArcadeElement extends HTMLElement {
     const send = (name: string, detail = {}) => this.dispatchEvent(new CustomEvent(name, { detail: { gameId: 'candy-snake', ...detail }, bubbles: true, composed: true }));
     try {
       const style = document.createElement('style');
-      style.textContent = `:host{display:block;min-width:0;container-type:inline-size}main{width:min(100%,720px);height:min(820px,calc(100cqw + 250px));min-height:520px;margin:auto;background:#f5f2e8;outline-offset:-3px}canvas{display:block;touch-action:none}`;
-      const container = document.createElement('main');
+      style.textContent = `:host{display:block;min-width:0;container-type:inline-size}.game-container{width:min(100%,720px);height:min(820px,calc(100cqw + 250px));min-height:520px;margin:auto;background:#f5f2e8;outline-offset:-3px}canvas{display:block;touch-action:none}`;
+      const container = document.createElement('div');
+      container.className = 'game-container';
       shadow.replaceChildren(style, container);
       container.style.aspectRatio = `${container.clientWidth} / ${container.clientHeight}`;
       container.style.height = 'auto';
