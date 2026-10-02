@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm exec vitest run tests/Snake-movement.test.ts` — run a single test file
 - `pnpm exec vitest run -t "rejects 180"` — run tests matching a name pattern
 
-CI (`.github/workflows/deploy.yml`) runs `pnpm install --frozen-lockfile && pnpm test && pnpm build` on push to `main` and deploys `dist/` to Cloudflare Pages (project `candy-snake`).
+CI (`.github/workflows/deploy.yml`) runs the existing unit/build/browser gates and publishes a verified complete R2 release for `candy-snake`. See `.github/workflows/deploy.md`.
 
 ## Architecture
 
